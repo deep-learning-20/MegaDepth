@@ -1,0 +1,21 @@
+{
+    "name": "megadepth",
+    "build":{
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "-it",
+        "--ipc=host",
+        "--network=host",
+        "--gpus=all",
+        "--runtime=nvidia",
+        "--privileged",
+        "-e=DISPLAY",
+        "-v=/tmp/.X11-unix:/tmp/.X11-unix",
+        "-p=0.0.0.0:6006:6006"
+	],
+	"extensions": [
+		"ms-python.python",
+		"ms-vscode.cpptools"
+	]
+}
