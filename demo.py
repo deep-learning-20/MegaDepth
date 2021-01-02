@@ -8,9 +8,11 @@ from data.data_loader import CreateDataLoader
 from models.models import create_model
 from skimage import io
 from skimage.transform import resize
+from time import perf_counter
 
-
-img_path = 'demo.jpg'
+img_dir = './'
+img_name = 'tokyo'
+img_path = img_dir+'/'+img_name+'.jpeg'
 
 model = create_model(opt)
 
@@ -30,6 +32,8 @@ def test_simple(model):
     input_img = input_img.unsqueeze(0)
 
     input_images = Variable(input_img.cuda() )
+    
+    start_time = perf_counter()
     pred_log_depth = model.netG.forward(input_images) 
     pred_log_depth = torch.squeeze(pred_log_depth)
 
@@ -41,8 +45,10 @@ def test_simple(model):
     pred_inv_depth = pred_inv_depth.data.cpu().numpy()
     # you might also use percentile for better visualization
     pred_inv_depth = pred_inv_depth/np.amax(pred_inv_depth)
+    
+    print("Inference Time: {}".format(perf_counter()-start_time))
 
-    io.imsave('demo.png', pred_inv_depth)
+    io.imsave(img_dir+'/'+img_name+'.png', pred_inv_depth)
     # print(pred_inv_depth.shape)
     sys.exit()
 
